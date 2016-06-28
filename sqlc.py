@@ -1,3 +1,6 @@
+#This is the most efficient way to put in values into a database!
+
+
 import sqlite3 
 
 conn = sqlite3.connect("new.db")
@@ -9,5 +12,5 @@ with conn as connection :
 	('Chicago', 'IL', 2700000),
 	('Houston', 'TX', 2100000),
 	]
-	
+
 	c.executemany('INSERT INTO population VALUES(?, ?, ?)', cities)
