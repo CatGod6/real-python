@@ -1,4 +1,4 @@
-#Although it looks like a lot this script updates a cities population easily
+#Although it looks like it's tough a lot this script is easy an updates a cities population efficiently
 
 
 import sqlite3 
