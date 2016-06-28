@@ -1,4 +1,4 @@
-#Create a SQLite3 database and table!
+#add data to the existing database!
 
 #import the sqlite3 library
 import sqlite3
@@ -9,9 +9,7 @@ conn = sqlite3.connect("new.db")
 #get a cursor object used to execute SQL commands
 cursor = conn.cursor()
 
-#create a table!
-##	(city TEXT, state TEXT, population INT)""")
-
+#insert data!
 cursor.execute("INSERT INTO population VALUES('New York City', \
 	'NY', 8200000)")
 
