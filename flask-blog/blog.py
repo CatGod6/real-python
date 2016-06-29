@@ -46,10 +46,31 @@ def login():
 		   	return redirect(url_for('main'))
 	return render_template('login.html', error=error)
 
+@app.route('/add' , methods=['POST'])
+@login_required
+def add():
+	title = request.form['title']
+	post = request.form['post']
+	if not title or not post:
+		flash("All fields are required. Please Try again.")
+		return redirect(url_for('main'))
+	else:
+		g.db = connect_db()
+		g.db.execute('insert into post (title,post) values(? , ?)',
+			[request.form['title'], request.form['post']])
+		g.db.commit()
+		g.db.close()
+		return redirect(url_for('main'))
+
+
 @app.route('/main')
 @login_required
 def main():
-	return render_template('main.html')
+	g.db= connect_db()
+	cur = g.db.execute('select * from post')
+	post = [dict(title=row[0], post=row[1]) for row in cur.fetchall()]
+	g.db.close()
+	return render_template('main.html',post=post)
 
 #routes to the logout page and gives the user a message
 @app.route('/logout')
