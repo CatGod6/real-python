@@ -117,6 +117,12 @@ h2 {
 	border-bottom: none;
 }
 
+.error {
+	color: red;
+	font-size: .8em;
+	background-color: #FFFFFF;
+}
+
 .button {
 	background-color:#000;
 	display:inline-block;
