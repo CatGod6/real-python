@@ -1,5 +1,5 @@
 # let's add some code :)
-
+# Flask Task by - Catrell Washington, Last updated 7/1/2016
 import sqlite3
 from flask import Flask, flash, redirect, render_template, request, session, url_for, g
 from functools import wraps
@@ -17,9 +17,11 @@ db = SQLAlchemy(app)
 #We're importing the file models
 from models import Task, User
 
+#Connecting to the database
 def connect_db():
 	return sqlite3.connect(app.config['DATABASE_PATH'])
 
+#This function tells the user that you must be logged in to get to a private section.
 def login_required(test):
 	@wraps(test)
 	def wrap(*args, **kwargs):
@@ -30,6 +32,7 @@ def login_required(test):
 			return redirect(url_for('login'))
 	return wrap
 
+#Logouts the user and takes them back to the main page.
 @app.route('/logout/')
 def logout():
 	session.pop('logged_in', None)
@@ -37,6 +40,7 @@ def logout():
 	flash("You have been logged out!")
 	return redirect(url_for('login'))
 
+#Logins in the user and takes them to the 'tasks' url.
 @app.route('/', methods=['GET', 'POST'])
 def login():
     error = None
@@ -77,9 +81,11 @@ def register():
 				return render_template('registration.html', form=form, error=error)
 	return render_template('registration.html', form=form, error=error)
 
+#Defines open tasks with a status of 1
 def open_tasks():
 	return db.session.query(Task).filter_by(status='1').order_by(Task.due_date.asc())
 
+#Defines closed tasks with a status of 0
 def closed_tasks():
 	return db.session.query(Task).filter_by(status='0').order_by(Task.due_date.asc())
 
@@ -94,7 +100,7 @@ def tasks():
 		closed_tasks=closed_tasks()
 		)
 
-#Add new tasks
+#Add new tasks for the selected user 
 @app.route('/add/', methods=['GET', 'POST'])
 @login_required
 def new_task():
@@ -120,7 +126,7 @@ def new_task():
 	return render_template('tasks.html', form=form, error=error, 
 		open_tasks=open_tasks(), closed_tasks=closed_tasks())
 
-#Mark tasks as complete
+#Mark tasks as completed
 @app.route('/complete/<int:task_id>/')
 @login_required
 def complete(task_id):
@@ -130,12 +136,11 @@ def complete(task_id):
 	flash('The task was marked as complete')
 	return redirect(url_for('tasks'))
 
+#Displays errors from forms.py
 def flash_errors(form):
 	for field, errors in form.errors.items():
-		for error in erros:
+		for error in errors:
 			flash(u"Error in the %s field - %s" % (getattr(form, field).label.text, error),'error')
-
-
 
 #Delete tasks 
 @app.route('/delete/<int:task_id>/')

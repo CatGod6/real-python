@@ -13,7 +13,7 @@ total_pages = input_file.getNumPages()
 for page_num in range(1,total_pages) :
     output_PDF.addPage(input_file.getPage(page_num))
 
-output_file_name = os.path.join(path, "BibleKJVNC.pdf")
+output_file_name = os.path.join(path, "BibleKJV.pdf")
 output_file = open(output_file_name , "wb")
 output_PDF.write(output_file)
 
